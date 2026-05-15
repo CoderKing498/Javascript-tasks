@@ -16,7 +16,7 @@ Variables:
 
 // Input username
 
-
+const prompt = require("prompt-sync")()
 let userName = prompt("Please, enter your name")
 while (userName === null || userName.trim() === "") {
     console.error("Error: Please enter a valid name.")
@@ -35,9 +35,9 @@ while (isNaN(agePrompt) || agePrompt.trim() === ""){
 // Convert string to a number
 const age = Number(agePrompt)
 if (age < 18){
-    alert(`Hello, ${userName}, you are under 18. Keep learning forward and enjoy writing code.`)
+    console.log(`Hello, ${userName}, you are under 18. Keep learning forward and enjoy writing code.`)
 }else{
-    alert(`Hello, ${userName}, you are an adult. Get ready for great opportunities in the world of programming.`)
+    console.log(`Hello, ${userName}, you are an adult. Get ready for great opportunities in the world of programming.`)
 }
 
 // Output data 
