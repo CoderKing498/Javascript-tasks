@@ -17,18 +17,18 @@ Variables:
 // Input username
 
 const prompt = require("prompt-sync")()
-let userName = prompt("Please, enter your name")
+let userName = prompt("Please, enter your name: ")
 while (userName === null || userName.trim() === "") {
     console.error("Error: Please enter a valid name.")
-    userName = prompt("Please, enter your name.")
+    userName = prompt("Please, enter your name: ")
 }
 
 
 // Input user's age
-let agePrompt = prompt("Please, enter your age")
+let agePrompt = prompt("Please, enter your age: ")
 while (isNaN(agePrompt) || agePrompt.trim() === ""){
     console.error("Error: Enter a valid age in numbers.")
-    agePrompt = prompt("Please, enter a valid number.")
+    agePrompt = prompt("Please, enter a valid number: ")
 }
 
 
