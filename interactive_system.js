@@ -16,33 +16,33 @@ Variables:
 
 // Input username
 
-const prompt = require("prompt-sync")()
-let userName = prompt("Please, enter your name: ")
+const prompt = require("prompt-sync")();
+let userName = prompt("Please, enter your name: ");
 while (userName === null || userName.trim() === "") {
-    console.error("Error: Please enter a valid name.")
-    userName = prompt("Please, enter your name: ")
+    console.error("Error: Please enter a valid name.");
+    userName = prompt("Please, enter your name: ");
 }
 
 
 // Input user's age
 let agePrompt = prompt("Please, enter your age: ")
 while (isNaN(agePrompt) || agePrompt.trim() === ""){
-    console.error("Error: Enter a valid age in numbers.")
-    agePrompt = prompt("Please, enter a valid number: ")
+    console.error("Error: Enter a valid age in numbers.");
+    agePrompt = prompt("Please, enter a valid number: ");
 }
 
 
 // Convert string to a number
 const age = Number(agePrompt)
 if (age < 18){
-    console.log(`Hello, ${userName}, you are under 18. Keep learning forward and enjoy writing code.`)
+    console.log(`Hello, ${userName}, you are under 18. Keep learning forward and enjoy writing code.`);
 }else{
-    console.log(`Hello, ${userName}, you are an adult. Get ready for great opportunities in the world of programming.`)
+    console.log(`Hello, ${userName}, you are an adult. Get ready for great opportunities in the world o;f programming.`)
 }
 
 // Output data 
-console.log(userName)
-console.log(age)
+console.log(userName);
+console.log(age);
 
 
 
