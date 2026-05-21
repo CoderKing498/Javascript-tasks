@@ -1,76 +1,120 @@
 const prompt = require("prompt-sync")();
 // let funds= 100000
-let numbers = [2,4,2,5,1,5,1,5,3,7,1,3,4,8,9,0] // Array of numbers (new Set)
-let newNumbers = [...new Set(numbers)] // New array with unique numbers using Set and spread operator
-// Array of objects to create a new Map
+
+
+// TASK 1: Array of objects
 const products = [
-    {ID: 1,
-    Name: "Big Mac", 
-    Price: "22.900"},
-    {ID: 2,
-    Name: "Perro Suizo", 
-    Price: "28.000"},
-    {ID: 3,
-    Name: "Pizza Quatro Formaggi", 
-    Price: "37.700"},
-    {ID: 4,
-    Name: "Spaghetti alla Puttanesca", 
-    Price: "52.000"},
-]
-const newProducts = new Map(products.map(product => [product.ID, product.Name])) // Relationates Product ID
-    console.log("Numbers")
-    for(const number of newNumbers){
-        console.log("-", number)
+    {
+        ID: 1,
+        name: "Big Mac",
+        price: "22.900"
+    },
+    {
+        ID: 2,
+        name: "Perro Suizo",
+        price: "22.900"
+    },
+    {
+        ID: 3,
+        name: "Pizza Quatro Formaggi",
+        price: "22.900"
+    },
+    {
+        ID: 4,
+        name: "Spaghetti alla Puttanesca",
+        price: "22.900"
     }
+];
 
-let options // Option as undefined to ini(tialixe while loop that contains menu
-while(options!= 4){
-    console.log("\n1) Browse goods \n2) Buy here \n3) Number list \n4) Validation buys \n5) Exit ")
-    option= parseInt(prompt(`Choose one `))
-    if (option == 1){
-        // Iterates array of objets with for.. in
-        for (product in products){
-            console.log(products(product)) // Shows each element
-        }
-        // With for.. of, showing keys and value for each object with .entries
-        for (const [key, value] of newProducts.entries()) {  // Iterates the Map with .entries to show keys and values
-            console.log(`${key}: ${value}`);
-        }
+console.log("--- Products object ---");
 
-        // With forEach, using arrow function to show each element of the array of objects
-        products.forEach(product => console.log(`ID: -> ${product.ID} - -> Name: ${product.Name} - -> Price: ${product.Price}`))
-        console.log("----------------------------------")
-        newProducts.forEach((ID, Name) => console.log(`ID: -> ${ID} - -> Name: ${Name}`)) // Iterates the Map with .forEach to show keys and values
-    }
-    else if (option == 2){
-        toPurchase = prompt("Product ID to buy: ").toLowerCase().trim()
-        quantity = parseInt(prompt("Quantity: "))
-        for(product of products){
-            if(product['Name'] === toPurchase){
-                console.log(`You have bought ${quantity} ${product['Name']} for a total of ${quantity * parseInt(product['Price'])}`)
-                let total = quantity * parseInt(product['Price'])
-                confirm = prompt("Purchase? y/n >>").toLowerCase().trim()
-                if (funds >= product['Price'] && confirm === "y"){
-                    funds -= total
-                    console.log("\nPurchased successfully! Your remaining funds are: ", funds)
-                }else if (funds < product['Price']){
-                    console.log("\nInsufficient funds. Please add more funds to complete the purchase.")
-                }
+console.log(products);
 
-            }
-        else if (option == 3){
-            console.log("Numbers")
-            for(const number of newNumbers){
-                console.log("-", number)
-            }
+const product = products.find(p => p.ID === 3);
+console.log(product);
 
-        }
-        else if (option == 4){
-            console.log("Validation buys")
-        }
-        else if (option == 5){
-            console.log("Exit")
-        }
-    }
+// Task 2: Create Set with numbers list (includes repeated values)
+
+const numbersArray = [2,4,2,5,1,5,1,5,3,7,1,3,4,8,9,0,5,4,5];
+const onSet = new Set(numbersArray);
+console.log("Set Content (duplicated deleted):", onSet);
+
+
+// Add new number to the Set with .add()
+onSet.add(6);
+console.log("Set after adding the 6:", onSet);
+
+// Checks if a specific number exists within the Set with .has().
+const numeroUno = onSet.has(1);
+console.log("Does the number 1 exist in the SET?:", numeroUno);
+
+// Delete a number from the Set with .delete()
+onSet.delete(5);
+console.log("Set after removing 5:", onSet);
+
+// Loop through the Set using a for…of to display each value.
+console.log("Traversing the Set with for...of");
+for(const number of onSet){
+    console.log("Value:", number);
+    //!number 5 will not appear because it was removed previously
+}
+/* TASK 3 Maps
+
+// Create a Map that relates the product category (key) to the product name (value).
+// Map from array of objects
+
+*/
+console.log("--- Operations with Map ---");
+const newMap = products.map(product => [product.ID, product.name]);
+const neoMap = new Map(products.map(product => [product.ID, product.name]));
+
+console.log("Map Content: ", newMap);
+console.log("Another Map Content", neoMap);
+
+console.log("\n--- Iteration over data structures ----")
+
+/*
+
+Task 4:  Iteration over data structures:
+//*Use for…in to list properties and values of the object.
+
+*/
+for (const product in products); // index of the product
+console.log(product);
+console.log(products[product]); // Object of products
+
+//*Use for…of to loop through the Set.
+for (const number of onSet) { 
+console.log("Value:", number);
+}
+//*Use forEach() to loop through the Map and display keys and values descriptively.
+console.log("-----------------");
+newMap.forEach((name, id) => { 
+console.log(`ID: ${id}, Name: ${name}`);
+})
+console.log("-----------------");
+neoMap.forEach((name, id) => { 
+console.log(`ID: ${id}, Name: ${name}`);
+})
+console.log("----------Task5-------------");
+
+
+// task 5 Validation and testing:
+//Implement validations to ensure that each product has a valid id, name and price.
+for (const product of products) { 
+if (!product.id || !product.name || product.price <= 0) { 
+console.error(`Invalid product: ${JSON.stringify(product)}`); 
 }
 }
+
+//Complete list of products (object)
+console.log("--------------------------");
+console.log(products);
+//List of unique products (Set)
+console.log("--------------------------");
+console.log(onSet);
+//Categories and product names (Map)
+console.log(newMap);
+console.log("--------------------------");
+//Categories and product names (Map2)
+console.log(neoMap);
