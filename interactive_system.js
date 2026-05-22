@@ -10,7 +10,6 @@ Variables:
 *If and Elif
 */
 
-const prompt = require("prompt-sync")();
 
 // User data inputs
 
