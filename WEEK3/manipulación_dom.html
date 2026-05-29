@@ -3,14 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./img/playlist.svg" type="image/svg">
     <link rel="stylesheet" href="/WEEK3/playlist.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Make-O-Playlist</title>
   </head>
   <body>
     <header class="header">
       <div class="container-header">
         <div class="slogan">
-          <img class="img-slogan" src="" alt="star" />
+          <img class="img-slogan" src="./img/disco.svg" alt="star"/>
           <p class="text-slogan">Guarda tus canciones preferidas</p>
         </div>
         <h1 class="title">Crea tus playlists</h1>
@@ -35,7 +37,7 @@
 
     <main class="main">
       <h3 class="title sub-title">Tu Playlist</h3>
-      <ul id="wowPlaylist"></ul>
+      <ul class="songs-playlist" id="wowPlaylist"></ul>
     </main>
     <script src="/WEEK3/app.js"></script>
   </body>
