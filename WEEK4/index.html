@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./img/playlist.svg" type="image/svg">
+    <link rel="stylesheet" href="/WEEK3/playlist.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>JSON-Playlist</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container-header">
+        <div class="slogan">
+          <img class="img-slogan" src="" alt=""/>
+          <p class="text-slogan">Guarda tus canciones preferidas</p>
+        </div>
+        <h1 class="title">Crea tus playlists</h1>
+        <p>
+          Escribe una canción popular y presiona 'Agregar' para guardarla en tu
+          lista de reproducción.
+        </p>
+
+        <form class="form" action="">
+          <input type="text" class="input-song" id="song" placeholder="Dale play a la guardada"/>
+          <button class="btn-agregar" id="btnAgregar" type="submit">+ Agregar</button>
+          <button class="btn-obtener" id="btnObtener">Obtener lista</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="main">
+      <h3 class="title sub-title">Tu Playlist</h3>
+      <ul class="songs-playlist" id="wowPlaylist"></ul>
+    </main>
+    <script src="/WEEK3/app.js"></script>
+  </body>
+</html>
