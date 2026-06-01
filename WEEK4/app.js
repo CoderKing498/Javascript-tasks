@@ -1,111 +1,166 @@
-// TASK 2: Identify HTML'S ID User interacting
-let song = document.getElementById('song');
-let btn = document.getElementById('btnAgregar');
-let playList = document.getElementById('wowPlaylist');
+const apiURL = 'http://localhost:3000/playlist'
+const song = document.getElementById('song');
+const addBtn = document.getElementById('addBtn');
+const btnSync = document.getElementById('btnSync');
+const playList = document.getElementById('wowPlaylist');
 
+// Global array to store songs in memory
+let globalSongs = [];
 
-// TASK 3 DOM (Document Object Model) dynamic manipulation
-btn.addEventListener('click', function (event){
-    event.preventDefault();
+/** 
+    * Updates the entire application state at once:
+    * Syncs Memory, LocalStorage, and renders the DOM.
+*/
+function updateState(newSongs){
+    globalSongs = newSongs;
+    localStorage.setItem('persistent_songs', JSON.stringify(globalSongs));
+    renderSongs();
+}
 
-    const textSong = song.value.trim();
-
-    // Validation of empty input
-    if(textSong === ''){
-        alert('¿Vas a dejar tirada tu playlist?');
-        return;
-    } else{
-       // Add a new song into the previous created array
-        const savedSongs = getSongs();
-        savedSongs.push(textSong);
-
-        // Save updated songs after adding a song
-        saveSongs(savedSongs);
-
-        // Render playlist again
-        showPlayList();
-
-        // Clear input
-        song.value = '';
+/*
+    * GET: Fetches songs from the server.
+    * Uses LocalStorage as a failback if the server is offline.
+*/
+async function loadSongs(){
+    try{
+        const answer = await fetch(apiURL);
+        if(!answer.ok) throw new Error('Server error');
+        const data = await answer.json();
+        console.log('Successfully synced with server');
+        updateState(data);
+    }catch (error){
+        console.warn('Server offline. Loading local backup');
+        const backup = JSON.parse(localStorage.getItem('persistent_songs')) || [];
+        updateState(backup);
     }
-
-});
-
-// TASK 4: DATA PERSISTENCE LOG
-
-// Create array using JSON.parse
-function getSongs() {
-    return JSON.parse(localStorage.getItem('songs')) || [];
 }
 
-/* Save songs using localStorage and JSON.stringify */ 
-function saveSongs(songs) {
-    localStorage.setItem('songs', JSON.stringify(songs));
+/** 
+ * POST: Adds a new song to the server first, then updates local state.
+*/
+async function addSong(text){
+    try{
+        const answer = await fetch(apiURL,{
+            method : 'POST',
+            headers: { 'Content-Type' : 'application/json'},
+            body: JSON.stringify({texto: text})
+        });
+        if (!answer.ok) throw new Error('Could not add song');
+        const newSong = await answer.json();
+        console.log('POST successful', newSong);
+        updateState([...globalSongs, newSong]);
+    }catch (error){
+        console.error('Error in POST:', error);
+        alert('Sorry, bro. Could not connect to the server to save the song.');
+    }
 }
 
-console.log(getSongs());
+/**
+ * PUT: Updates an existing song on the server and then locally.
+ */
+async function editSong(id, newText){
+    try{
+        const answer = await fetch(`${apiURL}/${id}`,{
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({texto: newText})
+        });
+        if (!answer.ok) throw new Error('Could not update the song');
+        const updatedSong = await answer.json();
+        console.log('PUT successful:', updatedSong);
+        updateState (globalSongs.map(song => song.id === id ? updatedSong : song));
+    } catch(error){
+        console.error('Error in PUT:', error);
+        alert('Error updating the song on the server.');
+    }
+}
 
-// Create a function that shows the playlist and deleted the undesired songs
-function showPlayList() {
+/**
+ * DELETE: Removes a song from the server and then from local state.
+ */
+async function deleteSong(id) {
+    try{
+        const answer = await fetch(`${apiURL}/${id}`, {
+        method: 'DELETE'
+    });
+        if (!answer.ok) throw new Error('Could not delete song');
+        console.log('DELETE successful for id', id);
+        updateState(globalSongs.filter(song => song.id !== id));
+    }catch(error){
+        console.error('Error in DELETE', error);
+        alert('Error deleting the song from the server');
+    }
+}
 
-    let valores = getSongs();
-
-    // CLEAR PLAYLIST
+/**
+ * Renders the playList in the DOM based on the global state.
+ */
+function renderSongs() {
     playList.innerHTML = '';
 
-    // Hide the playlist of songs if there is empty
-    if (valores.length === 0) {
-        playList.style.display = 'none';
+    if (globalSongs.length === 0) {
+        playList.style.display = 'flex';
+        playList.innerHTML =
+            '<p class="empty-msg">No songs found. Click "Sync List" or add a new song.</p>';
         return;
     }
 
-    // Show playlist
     playList.style.display = 'flex';
 
-    valores.forEach((valor, indice) => {
-
-        // Create the list of the songs with createElemebt
+    globalSongs.forEach((song) => {
         let li = document.createElement('li');
 
         li.classList.add('song-item');
 
-        // Insert HTML content to the html archive I was create before
         li.innerHTML = `
-            <div class="songs-content">
-                <p>${valor}</p>
-                <button class="btn-eliminar">Eliminar</button>
+        <div class="song-content">
+            <p class="song-text">${song.texto}</p>
+            <div class="actions">
+                <button class="btn-edit">Edit</button>
+                <button class="btn-delete">Delete</button>
             </div>
-        `;
+        </div>`;
 
-        // Select delete button after creating btnDelete in the InnerHTML
-        let btnEliminar = li.querySelector('.btn-eliminar');
+        li.querySelector('.btn-delete').onclick = () =>
+            deleteSong(song.id);
 
+        li.querySelector('.btn-edit').onclick = () => {
+            const newText = prompt(
+                'Edit your favorite song:',
+                song.texto
+            );
 
-        // Delete the song with a EventListener 
-        btnEliminar.addEventListener('click', function () {
-
-            // Use removeChild to delete DOM song
-            playList.removeChild(li);
-            // Remove selected song
-            const updatedSongs = valores.filter((_, i) => {
-                return i !== indice;
-            });
-
-            // localStorage.removeItem()
-            if (updatedSongs.length === 0){
-                localStorage.removeItem('songs');
-            }else{
-            // Save updated playlist with saveSongs with the const updated
-            saveSongs(updatedSongs);
+            if (newText !== null && newText.trim() !== '') {
+                editSong(song.id, newText.trim());
             }
-            // Re-render the playList with the previous function
-            showPlayList();
-        });
-        
-        // Add songs into the playlist of any genre
+        };
+
         playList.appendChild(li);
     });
 }
 
-// Load playlist on page start
-showPlayList(); // Show playlist when loading the page.
+// Event listener for the "Add" button
+addBtn.addEventListener('click', async function(event){
+    event.preventDefault();
+    const songText = song.value.trim();
+
+    if(songText === ''){
+        alert('Please Please Please, add your favorite song.');
+        return;
+    }
+
+    await addSong(songText);
+    song.value = '';
+});
+
+// Event listener for manual Sync
+btnSync.addEventListener('click', async () =>{
+    btnSync.textContent = 'Loading...';
+    btnSync.disabled = true;
+    await loadSongs();
+    btnSync.textContent = 'Sync List';
+    btnSync.disabled = false;
+});
+
+// Initial application load
+loadSongs();

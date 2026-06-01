@@ -1,0 +1,13 @@
+{
+  "playlist": [
+    {
+      "texto": "Tom's Diner",
+      "id": "KtBeLO8dkj0"
+    },
+    {
+      "texto": "Someone Like You",
+      "id": "ZfpZ1OqfnRo"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

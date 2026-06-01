@@ -1,38 +1,38 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="./img/playlist.svg" type="image/svg">
-    <link rel="stylesheet" href="/WEEK4/playlist.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/WEEK4/img/music-playlist-folder.svg" type="image/svg">
+    <link rel="stylesheet" href="/WEEK4/playlist.css"/>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>JSON-Playlist</title>
   </head>
   <body>
     <header class="header">
-      <div class="container-header">
+      <div class="header-container">
         <div class="slogan">
-          <img class="img-slogan" src="/WEEK4/img/disco.svg" alt=""/>
-          <p class="text-slogan">Guarda tus canciones preferidas</p>
+          <img class="slogan-img" src="/WEEK4/img/Spotify.svg" alt="spotify-logo"/>
+          <p class="slogan-text">Save your favorite songs</p>
         </div>
-        <h1 class="title">Crea tus playlists</h1>
+        <h1 class="title">Create your playlists</h1>
         <p>
-          Escribe una canción popular y presiona 'Agregar' para guardarla en tu
-          lista de reproducción.
+          Type a popular song and press 'Add' to save it to your
+          playlist.
         </p>
 
         <form class="form" action="">
-          <input type="text" class="input-song" id="song" placeholder="Dale play a la guardada"/>
-          <button class="btn-agregar" id="btnAgregar" type="submit">+ Agregar</button>
-          <button class="btn-obtener" id="btnObtener">Obtener lista</button>
+          <input type="text" class="song-input" id="song" placeholder="Play the saved one"/>
+          <button class="add-btn" id="addBtn" type="submit">+ Add</button>
+          <button class="btn-sync" id="btnSync" type="button">Sync List</button>
         </form>
       </div>
     </header>
 
     <main class="main">
-      <h3 class="title sub-title">Tu Playlist</h3>
-      <ul class="songs-playlist" id="wowPlaylist"></ul>
+      <h3 class="title sub-title">Your Playlist</h3>
+      <ul class="playlist-songs" id="wowPlaylist"></ul>
     </main>
-    <script src="/WEEK3/app.js"></script>
+    <script src="/WEEK4/app.js"></script>
   </body>
 </html>
